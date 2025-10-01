@@ -82,83 +82,89 @@ const PostEditor = ({ post, isOpen, onClose }: PostEditorProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
-        <DialogHeader className="p-4 pb-2">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+        <DialogHeader className="p-4 pb-2 border-b border-border">
           <DialogTitle>Edit Post</DialogTitle>
         </DialogHeader>
 
-        <div className="px-4 pb-4 space-y-4">
-          {/* Image Carousel */}
-          <div className="space-y-2">
-            {images.length > 0 && (
-              <div className="relative aspect-square bg-secondary rounded-lg overflow-hidden">
-                <img
-                  src={images[currentImageIndex]}
-                  alt={`Slide ${currentImageIndex + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                <button
-                  onClick={() => removeImage(currentImageIndex)}
-                  className="absolute top-2 right-2 bg-destructive text-destructive-foreground p-2 rounded-lg hover:opacity-90 transition-smooth"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                {images.length > 1 && (
-                  <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
-                    {images.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-smooth ${
-                          index === currentImageIndex ? 'bg-primary' : 'bg-background/50'
-                        }`}
-                      />
-                    ))}
+        <div className="p-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Column - Caption */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium block">Caption</label>
+              <Textarea
+                ref={textareaRef}
+                value={caption}
+                onChange={handleCaptionChange}
+                placeholder="Write your caption here..."
+                className="min-h-[400px] lg:min-h-[500px] resize-none"
+              />
+            </div>
+
+            {/* Right Column - Images & Actions */}
+            <div className="space-y-4">
+              {/* Image Carousel */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium block">Images</label>
+                {images.length > 0 && (
+                  <div className="relative aspect-square bg-secondary rounded-lg overflow-hidden">
+                    <img
+                      src={images[currentImageIndex]}
+                      alt={`Slide ${currentImageIndex + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      onClick={() => removeImage(currentImageIndex)}
+                      className="absolute top-2 right-2 bg-destructive text-destructive-foreground p-2 rounded-lg hover:opacity-90 transition-smooth"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                    {images.length > 1 && (
+                      <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
+                        {images.map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentImageIndex(index)}
+                            className={`w-2 h-2 rounded-full transition-smooth ${
+                              index === currentImageIndex ? 'bg-primary' : 'bg-background/50'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
+
+                {images.length < 20 && (
+                  <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-smooth">
+                    <ImageIcon className="w-5 h-5 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                      Add images ({images.length}/20)
+                    </span>
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                )}
               </div>
-            )}
 
-            {images.length < 20 && (
-              <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-smooth">
-                <ImageIcon className="w-5 h-5 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">
-                  Add images ({images.length}/20)
-                </span>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
-              </label>
-            )}
-          </div>
-
-          {/* Caption */}
-          <div>
-            <label className="text-sm font-medium mb-2 block">Caption</label>
-            <Textarea
-              ref={textareaRef}
-              value={caption}
-              onChange={handleCaptionChange}
-              placeholder="Write your caption here..."
-              className="min-h-[120px] max-h-[400px] resize-none overflow-y-auto"
-            />
-          </div>
-
-          {/* Actions */}
-          <div className="flex flex-col sm:flex-row gap-2 pt-2">
-            <Button onClick={handleSave} variant="outline" className="flex-1">
-              Save Changes
-            </Button>
-            <Button onClick={handleKill} variant="destructive" className="flex-1">
-              Kill
-            </Button>
-            <Button onClick={handleBlast} className="flex-1 bg-success hover:bg-success/90">
-              Blast
-            </Button>
+              {/* Actions */}
+              <div className="space-y-2 pt-4">
+                <Button onClick={handleSave} variant="outline" className="w-full">
+                  Save Changes
+                </Button>
+                <Button onClick={handleBlast} className="w-full bg-success hover:bg-success/90">
+                  Blast
+                </Button>
+                <Button onClick={handleKill} variant="destructive" className="w-full">
+                  Kill
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </DialogContent>
