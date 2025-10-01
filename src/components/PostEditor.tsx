@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Post, usePosts } from '@/contexts/PostContext';
 import { X, Image as ImageIcon, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -17,6 +17,7 @@ const PostEditor = ({ post, isOpen, onClose }: PostEditorProps) => {
   const [caption, setCaption] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (post) {
@@ -25,6 +26,17 @@ const PostEditor = ({ post, isOpen, onClose }: PostEditorProps) => {
       setCurrentImageIndex(0);
     }
   }, [post]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
+  }, [caption, isOpen]);
+
+  const handleCaptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCaption(e.target.value);
+  };
 
   const handleSave = () => {
     if (post) {
@@ -128,15 +140,11 @@ const PostEditor = ({ post, isOpen, onClose }: PostEditorProps) => {
           <div>
             <label className="text-sm font-medium mb-2 block">Caption</label>
             <Textarea
+              ref={textareaRef}
               value={caption}
-              onChange={(e) => {
-                setCaption(e.target.value);
-                e.target.style.height = 'auto';
-                e.target.style.height = e.target.scrollHeight + 'px';
-              }}
+              onChange={handleCaptionChange}
               placeholder="Write your caption here..."
               className="min-h-[120px] max-h-[400px] resize-none overflow-y-auto"
-              style={{ height: 'auto' }}
             />
           </div>
 
