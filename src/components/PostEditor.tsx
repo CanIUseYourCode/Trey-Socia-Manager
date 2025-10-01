@@ -129,9 +129,14 @@ const PostEditor = ({ post, isOpen, onClose }: PostEditorProps) => {
             <label className="text-sm font-medium mb-2 block">Caption</label>
             <Textarea
               value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              onChange={(e) => {
+                setCaption(e.target.value);
+                e.target.style.height = 'auto';
+                e.target.style.height = e.target.scrollHeight + 'px';
+              }}
               placeholder="Write your caption here..."
-              className="min-h-[120px] resize-none"
+              className="min-h-[120px] max-h-[400px] resize-none overflow-y-auto"
+              style={{ height: 'auto' }}
             />
           </div>
 
