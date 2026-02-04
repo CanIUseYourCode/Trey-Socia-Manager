@@ -16,17 +16,17 @@ const Approval = () => {
   };
 
   return (
-    <div className="bg-background p-4" style={{ minHeight: 'calc(100vh - 3.5rem)' }}>
-      <div className="max-w-screen-xl mx-auto space-y-6">
+    <div className="bg-background/95 min-h-screen p-8 animate-in fade-in duration-500">
+      <div className="max-w-screen-xl mx-auto space-y-8">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">Approval</h1>
-          <p className="text-muted-foreground">Create and manage your posts</p>
+          <h1 className="text-4xl font-bold font-heading text-foreground">Pending Approvals</h1>
+          <p className="text-muted-foreground text-lg">Review and create content for your audience</p>
         </div>
 
         <CreatePostForm />
 
         {pendingPosts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {pendingPosts.map((post) => (
               <PostCard
                 key={post.id}
@@ -36,8 +36,8 @@ const Approval = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No pending posts. Create your first one!</p>
+          <div className="text-center py-20 rounded-2xl border-2 border-dashed border-border/50 bg-card/20">
+            <p className="text-muted-foreground font-medium">No pending posts. Create your first one above!</p>
           </div>
         )}
       </div>

@@ -40,26 +40,26 @@ const CreatePostForm = () => {
   };
 
   return (
-    <Card className="p-4">
+    <Card className="glass-card border-dashed border-primary/20 p-6">
       <div className="space-y-4">
         <Textarea
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
           onFocus={() => setIsExpanded(true)}
           placeholder="What's on your mind?"
-          className="min-h-[80px] resize-none"
+          className="min-h-[80px] resize-none bg-transparent border-muted focus:border-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all font-medium"
         />
 
         {isExpanded && (
-          <>
+          <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
             {images.length > 0 && (
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                 {images.map((img, index) => (
-                  <div key={index} className="relative aspect-square bg-secondary rounded-lg overflow-hidden group">
+                  <div key={index} className="relative aspect-square bg-muted rounded-xl overflow-hidden group border border-border/50">
                     <img src={img} alt={`Upload ${index + 1}`} className="w-full h-full object-cover" />
                     <button
                       onClick={() => removeImage(index)}
-                      className="absolute top-1 right-1 bg-destructive text-destructive-foreground p-1 rounded opacity-0 group-hover:opacity-100 transition-smooth"
+                      className="absolute top-1 right-1 bg-black/60 backdrop-blur-md text-white p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-destructive"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -68,15 +68,13 @@ const CreatePostForm = () => {
               </div>
             )}
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {images.length < 20 && (
-                <label className="flex-1">
-                  <Button variant="outline" className="w-full" asChild>
-                    <span className="flex items-center gap-2">
-                      <ImageIcon className="w-4 h-4" />
-                      Add Images ({images.length}/20)
-                    </span>
-                  </Button>
+                <label className="flex-1 cursor-pointer">
+                  <div className="flex items-center justify-center gap-2 h-10 w-full rounded-xl border border-dashed border-border hover:border-primary/50 hover:bg-primary/5 transition-all text-sm font-medium text-muted-foreground hover:text-primary">
+                    <ImageIcon className="w-4 h-4" />
+                    Add Images ({images.length}/20)
+                  </div>
                   <input
                     type="file"
                     multiple
@@ -86,12 +84,12 @@ const CreatePostForm = () => {
                   />
                 </label>
               )}
-              <Button onClick={handleSubmit} className="flex-1">
+              <Button onClick={handleSubmit} className="flex-1 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Post
               </Button>
             </div>
-          </>
+          </div>
         )}
       </div>
     </Card>
